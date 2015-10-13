@@ -1,0 +1,46 @@
+{
+  "name": "loopback-cache",
+  "version": "0.0.0",
+  "description": "Cache solutions for Loopback",
+  "author": {
+    "name": "Wiredcraft",
+    "email": "info@wiredcraft.com",
+    "url": "http://wiredcraft.com"
+  },
+  "contributors": [
+    "Makara Wang"
+  ],
+  "keywords": [
+    "StrongLoop",
+    "LoopBack",
+    "Cache",
+    "Mixin",
+    "Redis"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Wiredcraft/loopback-cache"
+  },
+  "bugs": {
+    "url": "https://github.com/Wiredcraft/loopback-cache/issues"
+  },
+  "homepage": "https://github.com/Wiredcraft/loopback-cache",
+  "dependencies": {
+    "debug": "^2.1.1",
+    "file-register": "^0.0.3"
+  },
+  "devDependencies": {
+    "loopback-connector-redis": "^0.0.3",
+    "loopback-datasource-juggler": "^2.28.0",
+    "mocha": "^2.0.0",
+    "rc": "^1.0.0",
+    "should": "^7.0.0",
+    "sinon": "^1.0.0"
+  },
+  "scripts": {
+    "benchmarks": "make benchmarks",
+    "leak-detection": "make leak-detection",
+    "test": "make test"
+  }
+}
