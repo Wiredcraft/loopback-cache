@@ -8,6 +8,7 @@ module.exports = function(Model, options) {
     Model.observe('after save', function(ctx, next) {
       // @see http://redis.io/commands/expire.
       // TODO
+      
       next();
     });
   }
