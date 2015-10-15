@@ -38,12 +38,12 @@ describe('json-parsing', function() {
         age: 24
       }, function(err, res) {
         if(err) console.log(err);
-        //block
-        for(var start = +new Date; +new Date - start <= config.ttl*1000; ) { } 
-        Person.findById('3',function(err, res) {
-          should.not.exist(res.id);
-          done(err, res);
-        })
+        setTimeout(function(){
+          Person.findById('3',function(err, res) {
+            should.not.exist(res.id);
+            done(err, res);
+          });
+        },config.ttl*1000);
       });
     });
 
