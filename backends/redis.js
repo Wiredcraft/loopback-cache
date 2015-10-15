@@ -8,17 +8,8 @@ module.exports = function(Model, options) {
 
     Model.observe('after save', function(ctx, next) {
       // @see http://redis.io/commands/expire.
-
-      if (ctx.instance) {
-        console.log('Saved %s#%s', ctx.Model.modelName, ctx.instance.id);
-      } else {
-        console.log('Updated %s matching %j',
-        ctx.Model.pluralModelName,
-        ctx.where);
-      }
-
-      //TODO: set EXPIRE for ctx.Model
-        
+      var redisClient = ctx.Model.getConnector().client._client;
+      redisClient.expire(ctx.Model.modelName+":"+ctx.instance.id, options.ttl);
 
       next();
     });

@@ -27,7 +27,7 @@ describe('json-parsing', function() {
 
     it('mixin test case 1', function(done) {
       var config = {
-        ttl: 5
+        ttl: 20  //seconds
       };
       mixin(Person,config);
 
