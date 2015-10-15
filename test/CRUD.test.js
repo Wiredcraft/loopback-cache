@@ -16,18 +16,19 @@ describe('json-parsing', function() {
         age: 34
       }, function(err, res) {
         if(err) console.log(err);
-        Person.find({id: 2},function(err, res) {
-          res.id.should.eql(2);
-          res.name.should.eql('Mary');
-          res.age.should.eql(34);
+        var self = this;
+        Person.findById('2',function(err, res) {
+          res.id.should.equal(2);
+          res.name.should.equal('Mary');
+          res.age.should.equal(34);
+          done(err, res);
         })
-        done(err, res);
       });
     });
 
     it('mixin test case 1', function(done) {
       var config = {
-        ttl: 20  //seconds
+        ttl: 3  //seconds
       };
       mixin(Person,config);
 
@@ -37,16 +38,13 @@ describe('json-parsing', function() {
         age: 24
       }, function(err, res) {
         if(err) console.log(err);
-
-        Person.find({id: 3},function(err, res) {
-          res.id.should.eql(3);
-          res.name.should.eql('Charlie');
-          res.age.should.eql(24);
+        //block
+        for(var start = +new Date; +new Date - start <= config.ttl*1000; ) { } 
+        Person.findById('3',function(err, res) {
+          should.not.exist(res.id);
+          done(err, res);
         })
-
-        done(err, res);
       });
-
     });
 
 });

@@ -8,8 +8,9 @@ module.exports = function(Model, options) {
 
     Model.observe('after save', function(ctx, next) {
       // @see http://redis.io/commands/expire.
-      var redisClient = ctx.Model.getConnector().client._client;
-      redisClient.expire(ctx.Model.modelName+":"+ctx.instance.id, options.ttl);
+      var redisClient = ctx.Model.getConnector().client;
+      //pass arguments as array
+      redisClient.expire([ctx.Model.modelName+":"+ctx.instance.id, options.ttl]);
 
       next();
     });
