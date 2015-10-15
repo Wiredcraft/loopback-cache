@@ -1,6 +1,6 @@
 var should = require('./init.js');
 var mixin = require('../').redis
-var db, Person;
+var db, Person, config;
 
 describe('json-parsing', function() {
 
@@ -9,14 +9,13 @@ describe('json-parsing', function() {
         Person = db.createModel('person', {id: Number, name: String, age: Number});
     });
 
-    it('create test case 1', function(done) {
+    it('create should create new item', function(done) {
       Person.create({
         id: 2,
         name: 'Mary',
         age: 34
       }, function(err, res) {
         if(err) console.log(err);
-        var self = this;
         Person.findById('2',function(err, res) {
           res.id.should.equal(2);
           res.name.should.equal('Mary');
@@ -26,8 +25,8 @@ describe('json-parsing', function() {
       });
     });
 
-    it('mixin test case 1', function(done) {
-      var config = {
+    it('create should create new item with mixin EXPIRE in 3s', function(done) {
+      config = {
         ttl: 3  //seconds
       };
       mixin(Person,config);
