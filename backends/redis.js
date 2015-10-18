@@ -10,10 +10,7 @@ module.exports = function(Model, options) {
       // @see http://redis.io/commands/expire.
       var redisClient = ctx.Model.getConnector().client;
       //pass arguments as array
-      redisClient.expire([ctx.Model.modelName+":"+ctx.instance.id, options.ttl],function(err,res){
-        if(err) console.log(err);
-      });
-      next();
+      redisClient.expire([ctx.Model.modelName+":"+ctx.instance.id, options.ttl],next);
     });
   }
 
