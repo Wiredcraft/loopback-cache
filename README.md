@@ -1,4 +1,7 @@
 # loopback-cache
+
+[![build status][travis-image]][travis-url]
+
 Cache solutions for Loopback.
 
 # How to deploy and test
@@ -16,3 +19,6 @@ var config = {
 ```
 
 - npm test
+
+[travis-image]: https://img.shields.io/travis/Wiredcraft/loopback-cache/master.svg?style=flat-square
+[travis-url]: https://travis-ci.org/Wiredcraft/loopback-cache

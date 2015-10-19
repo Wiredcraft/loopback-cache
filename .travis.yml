@@ -1,8 +1,9 @@
 language: node_js
 node_js:
-  - "0.10"
+  - "4.1"
+  - "4.0"
   - "0.12"
-  - "4.00"
+  - "iojs"
 install:
   - npm install
 script:
