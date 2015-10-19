@@ -11,7 +11,6 @@
 var debug = require('debug')('loopback:cache:CacheModel');
 
 var lib = require('../');
-var backends = lib.backends;
 
 module.exports = function(Model, options) {
 
@@ -20,12 +19,12 @@ module.exports = function(Model, options) {
   }
 
   // Require a backend.
-  if (options.backend == null || lib.backends[options.backend] == null) {
+  if (options.backend == null || lib[options.backend] == null) {
     console.warn('...');
     return;
   }
 
-  var backend = lib.backends[options.backend];
+  var backend = lib[options.backend];
 
   // Invoke backend.
   if (typeof backend === 'function') {
