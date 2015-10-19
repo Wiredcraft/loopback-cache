@@ -2,6 +2,7 @@
 !.gitignore
 !.npmignore
 !.jshintrc
+!.travis.yml
 
 *.orig
 
