@@ -5,7 +5,7 @@ var Register = require('file-register');
 var lib = Register();
 
 // Register files.
-lib.register(path.resolve(__dirname, 'backends'));
+lib.register(__dirname, 'backends');
 
 // Export.
 module.exports = lib;
