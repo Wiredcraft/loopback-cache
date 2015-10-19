@@ -3,14 +3,11 @@ module.exports = function(Model, options) {
 
   // Set TTL after save.
   if (options.ttl != null && options.ttl) {
-    // Assuming the Model connector is "redis" here but we may need a config in
-    // the future.
-
     Model.observe('after save', function(ctx, next) {
-      // @see http://redis.io/commands/expire.
+      // TODO: fail if the connector is not "redis".
       var redisClient = ctx.Model.getConnector().client;
-      //pass arguments as array
-      redisClient.expire([ctx.Model.modelName+":"+ctx.instance.id, options.ttl],next);
+      // @see http://redis.io/commands/expire.
+      redisClient.expire([ctx.Model.modelName + ':' + ctx.instance.id, options.ttl], next);
     });
   }
 
