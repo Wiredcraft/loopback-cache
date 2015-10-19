@@ -5,10 +5,12 @@ module.exports = function(Model, options) {
   if (options.ttl != null && options.ttl) {
     // Assuming the Model connector is "redis" here but we may need a config in
     // the future.
+
     Model.observe('after save', function(ctx, next) {
       // @see http://redis.io/commands/expire.
-      // TODO
-      next();
+      var redisClient = ctx.Model.getConnector().client;
+      //pass arguments as array
+      redisClient.expire([ctx.Model.modelName+":"+ctx.instance.id, options.ttl],next);
     });
   }
 
