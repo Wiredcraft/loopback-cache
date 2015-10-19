@@ -36,11 +36,12 @@
     "mocha": "^2.0.0",
     "rc": "^1.0.0",
     "should": "^7.0.0",
-    "sinon": "^1.0.0"
+    "sinon": "^1.0.0",
+    "jscs":"^2.3.4"
   },
   "scripts": {
     "benchmarks": "make benchmarks",
     "leak-detection": "make leak-detection",
-    "test": "make test"
+    "test": "jscs */*.js --preset=airbnb && make test"
   }
 }
