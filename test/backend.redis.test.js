@@ -58,8 +58,10 @@ describe('json-parsing', function() {
     db = new DataSource('memory');
     Person = db.createModel('person', {id: Number, name: String, age: Number});
     mixin(Person, options);
-    return Person.create(persons[1]).then().catch(function(err) {
-      err.message.should.eql('the connector should be redis');
+    return Person.create(persons[1]).then(function(res) {
+      done(new Error('expected an error'));
+    }).catch(function(err) {
+      should.exist(err);
       done();
     });
   });
