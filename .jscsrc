@@ -1,5 +1,5 @@
 {
-	"disallowEmptyBlocks": false,
+  "disallowEmptyBlocks": false,
   "preset": "airbnb",
   "requirePaddingNewLinesAfterBlocks": false,
   "requirePaddingNewLinesBeforeLineComments": false,
