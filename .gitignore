@@ -1,7 +1,6 @@
 .*
 !.gitignore
 !.npmignore
-!.jshintrc
 !.travis.yml
 !.jscsrc
 
