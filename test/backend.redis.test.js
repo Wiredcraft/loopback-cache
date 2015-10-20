@@ -53,4 +53,13 @@ describe('json-parsing', function() {
     });
   });
 
+  it('create error with none-redis connector', function(done) {
+    Person.getConnector().name = 'mongodb';
+    mixin(Person, options);
+    return Person.create(persons[1]).then().catch(function(err) {
+      should.exist(err);
+      done();
+    });
+  });
+
 });

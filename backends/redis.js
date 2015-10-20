@@ -5,7 +5,10 @@ module.exports = function(Model, options) {
   if (options.ttl != null && options.ttl) {
     Model.observe('after save', function(ctx, next) {
 
-      // TODO: fail if the connector is not "redis".
+      if (ctx.Model.getConnector().name !== 'redis') {
+        next(Error('the connector should be redis'));
+      }
+
       var redisClient = ctx.Model.getConnector().client;
 
       // @see http://redis.io/commands/expire.
