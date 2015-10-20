@@ -59,7 +59,7 @@ describe('json-parsing', function() {
     Person = db.createModel('person', {id: Number, name: String, age: Number});
     mixin(Person, options);
     return Person.create(persons[1]).then().catch(function(err) {
-      should.exist(err);
+      err.message.should.eql('the connector should be redis');
       done();
     });
   });
