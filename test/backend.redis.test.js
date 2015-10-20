@@ -1,5 +1,6 @@
 var should = require('./init.js');
 var mixin = require('../mixins/cacheModel');
+var DataSource = require('loopback-datasource-juggler').DataSource;
 var db;
 var Person;
 var options;
@@ -13,17 +14,17 @@ describe('json-parsing', function() {
       {
         id: 1,
         name: 'Mary',
-        age: 34,
+        age: 34
       },
       {
         id: 2,
         name: 'Charlie',
-        age: 24,
-      },
+        age: 24
+      }
     ];
     options = {
       backend: 'redis',
-      ttl: 3,  //seconds
+      ttl: 3  //seconds
     };
   });
 
@@ -54,7 +55,8 @@ describe('json-parsing', function() {
   });
 
   it('create error with none-redis connector', function(done) {
-    Person.getConnector().name = 'mongodb';
+    db = new DataSource('memory');
+    Person = db.createModel('person', {id: Number, name: String, age: Number});
     mixin(Person, options);
     return Person.create(persons[1]).then().catch(function(err) {
       should.exist(err);

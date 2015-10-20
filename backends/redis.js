@@ -6,13 +6,13 @@ module.exports = function(Model, options) {
     Model.observe('after save', function(ctx, next) {
 
       if (ctx.Model.getConnector().name !== 'redis') {
-        next(Error('the connector should be redis'));
+        next(new Error('the connector should be redis'));
+      } else {
+        var redisClient = ctx.Model.getConnector().client;
+
+        // @see http://redis.io/commands/expire.
+        redisClient.expire([ctx.Model.modelName + ':' + ctx.instance.id, options.ttl], next);
       }
-
-      var redisClient = ctx.Model.getConnector().client;
-
-      // @see http://redis.io/commands/expire.
-      redisClient.expire([ctx.Model.modelName + ':' + ctx.instance.id, options.ttl], next);
     });
   }
 

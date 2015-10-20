@@ -3,6 +3,7 @@
 !.npmignore
 !.jshintrc
 !.travis.yml
+!.jscsrc
 
 *.orig
 
