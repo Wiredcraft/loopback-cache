@@ -31,6 +31,7 @@
     "file-register": "^0.0.3"
   },
   "devDependencies": {
+    "jscs":"^2.3.4",
     "loopback-connector-redis": "^0.0.3",
     "loopback-datasource-juggler": "^2.28.0",
     "mocha": "^2.0.0",
@@ -41,6 +42,6 @@
   "scripts": {
     "benchmarks": "make benchmarks",
     "leak-detection": "make leak-detection",
-    "test": "make test"
+    "test": "jscs */*.js && make test"
   }
 }
