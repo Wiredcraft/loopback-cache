@@ -4,10 +4,16 @@ node_js:
   - "4.1"
   - "4.0"
   - "0.12"
+sudo: required
+services:
+  - redis-server
+  - docker
+env:
+  - COUCHBASE="couchbase/server:community-4.0.0"
+  - COUCHBASE="couchbase/server:community-3.0.1"
+before_install:
+  - ./test/docker-couchbase.sh
 install:
   - npm install
 script:
   - npm test
-sudo: false
-services:
-  - redis-server
