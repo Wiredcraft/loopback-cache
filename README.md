@@ -8,13 +8,16 @@ Cache solutions for Loopback.
 
 - npm i
 
-- Make sure redis server is running on `127.0.0.1:6379`(by default)
+- Make sure that 
+	- Redis is running on `127.0.0.1:6379`(by default)
+	- Couchbase is running on `couchbase://localhost`(by default)
 
-- Set your `TTL`:
+- Set your config:
 
 ```
-var config = {
-	ttl: 20  //seconds
+options = {
+  backend: 'redis',
+  ttl: 3  //seconds
 };
 ```
 

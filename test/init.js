@@ -4,16 +4,12 @@ var DataSource = require('loopback-datasource-juggler').DataSource;
 
 function noop(err, res) {}
 
-global.getDataSource = global.getSchema = function(customConfig, callback) {
+global.getDataSource = global.getSchema = function(database, customConfig, callback) {
   if (callback == null) {
     callback = noop;
   }
 
-  var db = new DataSource(require('loopback-connector-redis'), customConfig || {});
-
-  // db.log = function(a) {
-  //   console.log(a);
-  // };
+  var db = new DataSource(require(database), customConfig || {});
 
   db.on('connected', function() {
     callback(null, db);

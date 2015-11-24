@@ -25,6 +25,18 @@ module.exports = function(Model, options) {
     return;
   }
 
+  //set expiration time for specific db
+  switch (options.backend) {
+    case 'redis':
+      options.ttl *= 1000; //ms for redis
+      break;
+    case 'couchbase':
+      options.ttl = options.ttl; //s for couchbase
+      break;
+    default:
+      options.ttl *= 1000;
+  }
+
   var backend = lib.backends[options.backend];
 
   // Invoke backend.
