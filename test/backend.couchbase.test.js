@@ -47,7 +47,7 @@ describe('Couchbase tests', function() {
           should.exist(err);
           done();
         });
-      }, options.ttl * 1000);
+      }, (options.ttl + 1) * 1000);
     }).catch(function(err) {
       done(err);
     });
