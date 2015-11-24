@@ -5,9 +5,9 @@ var db;
 var Person;
 var options;
 
-describe('Redis tests', function() {
+describe('Couchbase tests', function() {
   before(function() {
-    db = getDataSource('loopback-connector-redis');
+    db = getDataSource('loopback-connector-couchbase3');
     Person = db.createModel('person', {id: Number, name: String, age: Number});
     persons = [
       {
@@ -22,7 +22,7 @@ describe('Redis tests', function() {
       }
     ];
     options = {
-      backend: 'redis',
+      backend: 'couchbase',
       ttl: 3  //s
     };
   });
@@ -42,10 +42,10 @@ describe('Redis tests', function() {
       res.name.should.eql('Charlie');
       setTimeout(function() {
         return Person.findById(persons[1].id.toString()).then(function(res) {
-          should.not.exist(res.id);
-          done();
+          done(new Error('expected an error'));
         }).catch(function(err) {
-          done(err);
+          should.exist(err);
+          done();
         });
       }, options.ttl * 1000);
     }).catch(function(err) {
@@ -53,7 +53,15 @@ describe('Redis tests', function() {
     });
   });
 
-  it('create error with none-redis connector', function(done) {
+  it('remove one exist document', function(done) {
+    return Person.removeById(persons[0].id).then(function() {
+      done();
+    }).catch(function(err) {
+      done(err);
+    });
+  });
+
+  it('create error with none-couchbase connector', function(done) {
     db = new DataSource('memory');
     Person = db.createModel('person', {id: Number, name: String, age: Number});
     mixin(Person, options);
