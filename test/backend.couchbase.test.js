@@ -1,75 +1,80 @@
-var should = require('./init.js');
+var should = require('should');
 var mixin = require('../mixins/cacheModel');
 var DataSource = require('loopback-datasource-juggler').DataSource;
-var db;
-var Person;
-var options;
 
-describe('Couchbase tests', function() {
+describe('Couchbase backend', function() {
+  var db;
+  var Person;
+  var id;
+
   before(function() {
-    db = getDataSource('loopback-connector-couchbase3');
-    Person = db.createModel('person', {id: Number, name: String, age: Number});
-    persons = [
-      {
-        id: 1,
-        name: 'Mary',
-        age: 34
+    db = new DataSource(require('loopback-connector-couchbase3'), {
+      cluster: {
+        url: 'couchbase://localhost',
+        options: {}
       },
-      {
-        id: 2,
-        name: 'Charlie',
-        age: 24
+      bucket: {
+        name: 'test_bucket',
+        password: ''
       }
-    ];
-    options = {
+    });
+    Person = db.createModel('person', {
+      id: {
+        type: String,
+        id: true
+      },
+      name: String
+    });
+    mixin(Person, {
       backend: 'couchbase',
-      ttl: 3  //s
-    };
+      ttl: 2 //s
+    });
   });
 
-  it('create should create new item', function(done) {
-    return Person.create(persons[0]).then(function(res) {
-      res.name.should.eql('Mary');
+  after(function(done) {
+    db.connector.manager().call('flushAsync').then(function() {
       done();
-    }).catch(function(err) {
-      done(err);
-    });
+    }, done);
   });
 
-  it('create should create new item with mixin EXPIRE in 3s', function(done) {
-    mixin(Person, options);
-    return Person.create(persons[1]).then(function(res) {
-      res.name.should.eql('Charlie');
-      setTimeout(function() {
-        return Person.findById(persons[1].id.toString()).then(function(res) {
-          done(new Error('expected an error'));
-        }).catch(function(err) {
-          should.exist(err);
-          done();
-        });
-      }, (options.ttl + 1) * 1000);
-    }).catch(function(err) {
-      done(err);
-    });
-  });
-
-  it('remove one exist document', function(done) {
-    return Person.removeById(persons[0].id).then(function() {
+  it('can create a new item', function(done) {
+    return Person.create({
+      name: 'Lorem'
+    }).then(function(person) {
+      person.should.be.Object();
+      person.id.should.be.String();
+      person.name.should.equal('Lorem');
+      id = person.id;
       done();
-    }).catch(function(err) {
-      done(err);
-    });
+    }).catch(done);
   });
 
-  it('create error with none-couchbase connector', function(done) {
-    db = new DataSource('memory');
-    Person = db.createModel('person', {id: Number, name: String, age: Number});
-    mixin(Person, options);
-    return Person.create(persons[1]).then(function(res) {
+  it('can load the item', function(done) {
+    Person.findById(id).then(function(person) {
+      person.should.be.Object();
+      person.id.should.equal(id);
+      person.name.should.equal('Lorem');
+      done();
+    }).catch(done);
+  });
+
+  it('cannot load something not there', function(done) {
+    Person.findById('ipsum').then(function() {
       done(new Error('expected an error'));
-    }).catch(function(err) {
+    }, function(err) {
       should.exist(err);
       done();
     });
+  });
+
+  it('cannot load the item after 3 seconds', function(done) {
+    setTimeout(function() {
+      Person.findById(id).then(function() {
+        done(new Error('expected an error'));
+      }, function(err) {
+        should.exist(err);
+        done();
+      });
+    }, 3000);
   });
 });

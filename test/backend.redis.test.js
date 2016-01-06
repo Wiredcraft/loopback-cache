@@ -1,67 +1,60 @@
-var should = require('./init.js');
+var should = require('should');
 var mixin = require('../mixins/cacheModel');
 var DataSource = require('loopback-datasource-juggler').DataSource;
-var db;
-var Person;
-var options;
 
-describe('Redis tests', function() {
+describe('Redis backend', function() {
+  var db;
+  var Person;
+  var id;
+
   before(function() {
-    db = getDataSource('loopback-connector-redis');
-    Person = db.createModel('person', {id: Number, name: String, age: Number});
-    persons = [
-      {
-        id: 1,
-        name: 'Mary',
-        age: 34
-      },
-      {
-        id: 2,
-        name: 'Charlie',
-        age: 24
-      }
-    ];
-    options = {
+    db = new DataSource(require('loopback-connector-redis'));
+    Person = db.createModel('person', {
+      id: String,
+      name: String
+    });
+    mixin(Person, {
       backend: 'redis',
-      ttl: 3  //s
-    };
+      ttl: 2 //s
+    });
   });
 
-  it('create should create new item', function(done) {
-    return Person.create(persons[0]).then(function(res) {
-      res.name.should.eql('Mary');
+  it('can create a new item', function(done) {
+    return Person.create({
+      name: 'Lorem'
+    }).then(function(person) {
+      person.should.be.Object();
+      person.name.should.equal('Lorem');
+      id = person.id;
       done();
-    }).catch(function(err) {
-      done(err);
-    });
+    }).catch(done);
   });
 
-  it('create should create new item with mixin EXPIRE in 3s', function(done) {
-    mixin(Person, options);
-    return Person.create(persons[1]).then(function(res) {
-      res.name.should.eql('Charlie');
-      setTimeout(function() {
-        return Person.findById(persons[1].id.toString()).then(function(res) {
-          should.not.exist(res.id);
-          done();
-        }).catch(function(err) {
-          done(err);
-        });
-      }, options.ttl * 1000);
-    }).catch(function(err) {
-      done(err);
-    });
-  });
-
-  it('create error with none-redis connector', function(done) {
-    db = new DataSource('memory');
-    Person = db.createModel('person', {id: Number, name: String, age: Number});
-    mixin(Person, options);
-    return Person.create(persons[1]).then(function(res) {
-      done(new Error('expected an error'));
-    }).catch(function(err) {
-      should.exist(err);
+  it('can load the item', function(done) {
+    Person.findById(id).then(function(person) {
+      person.should.be.Object();
+      person.name.should.equal('Lorem');
       done();
-    });
+    }).catch(done);
+  });
+
+  it('cannot load something not there', function(done) {
+    Person.findById(999).then(function(person) {
+      person.should.be.Object();
+      should(person.id).be.undefined();
+      should(person.name).be.undefined();
+      done();
+    }).catch(done);
+  });
+
+  it('cannot load the item after 3 seconds', function(done) {
+    setTimeout(function() {
+      Person.findById('lorem').then(function(person) {
+        person.should.be.Object();
+        should(person.id).be.undefined();
+        should(person.name).be.undefined();
+        done();
+      }).catch(done);
+    }, 3000);
   });
 });
