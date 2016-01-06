@@ -1,12 +1,15 @@
 /**
- * "CacheModel" mixin.
+ * `CacheModel` mixin.
  *
  * Mixin this so the model acts like a "cache", for example the saved data can
  * disappear after a certain TTL.
  *
  * Options:
+ * - `backend` One of the cache backends.
  *
- * - backend: one of the cache backends, for now there are: "redis".
+ * Built in backends:
+ * - `redis`
+ * - `couchbase`
  */
 var debug = require('debug')('loopback:cache:CacheModel');
 

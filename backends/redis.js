@@ -1,21 +1,20 @@
+var util = require('util');
+
 // Same syntax as a mixin.
 module.exports = function(Model, options) {
 
-  // Set TTL after save.
   if (options.ttl != null && options.ttl) {
+    // Set TTL after save.
     Model.observe('after save', function(ctx, next) {
-
-      if (ctx.Model.getConnector().name !== 'redis') {
-        return next(new Error('the connector should be redis'));
+      // @see https://github.com/strongloop/loopback-connector-redis
+      if (ctx.Model.getConnector().name === 'redis') {
+        var client = ctx.Model.getConnector().client;
+        var key = util.format('%s:%s', ctx.Model.modelName, ctx.instance.id);
+        // @see http://redis.io/commands/expire.
+        return client.expire([key, options.ttl], next);
       }
-
-      var redisClient = ctx.Model.getConnector().client;
-      var modelName = ctx.Model.modelName;
-      var modelID = ctx.instance.id;
-      var expirationTime = options.ttl;  //s
-
-      // @see http://redis.io/commands/expire.
-      redisClient.expire([modelName + ':' + modelID, expirationTime], next);
+      // Nothing else supported for now.
+      next();
     });
   }
 

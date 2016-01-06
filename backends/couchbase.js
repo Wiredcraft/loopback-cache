@@ -1,15 +1,16 @@
 // Same syntax as a mixin.
 module.exports = function(Model, options) {
 
-  // Set TTL after save.
   if (options.ttl != null && options.ttl) {
+    // Set TTL before save.
     Model.observe('before save', function(ctx, next) {
-
-      if (ctx.Model.getConnector().name !== 'couchbase') {
-        return next(new Error('the connector should be couchbase'));
+      // @see https://github.com/Wiredcraft/loopback-connector-couchbase3
+      if (ctx.Model.getConnector().name === 'couchbase3') {
+        // @see http://docs.couchbase.com/sdk-api/couchbase-node-client-2.1.2/Bucket.html#touch
+        ctx.options.expiry = options.ttl;
+        return next();
       }
-
-      ctx.options.expiry = options.ttl;  //s
+      // Nothing else supported for now.
       next();
     });
   }
