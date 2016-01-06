@@ -7,7 +7,6 @@
 *.orig
 
 /backup
-/test/coverage.*
 /test/debug
 
 # Logs
