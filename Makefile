@@ -7,7 +7,7 @@ COVERALLS = ./node_modules/.bin/coveralls
 
 lint:
 	@echo "Linting..."
-	@./node_modules/.bin/jscs */*.js
+	@./node_modules/.bin/jscs index.js backends mixins test
 test: lint
 	@echo "Testing..."
 	@$(ENV) $(MOCHA) $(MOCHA_OPTS) $(TESTS)

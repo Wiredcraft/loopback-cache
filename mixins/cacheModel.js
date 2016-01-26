@@ -16,7 +16,7 @@ var debug = require('debug')('loopback:cache:CacheModel');
 var lib = require('../');
 var backends = lib.backends;
 
-module.exports = function(Model, options) {
+module.exports = function (Model, options) {
 
   if (options == null) {
     options = {};

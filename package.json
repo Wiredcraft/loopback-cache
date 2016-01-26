@@ -28,18 +28,19 @@
   "homepage": "https://github.com/Wiredcraft/loopback-cache",
   "dependencies": {
     "debug": "^2.1.1",
-    "file-register": "^0.0.3"
+    "file-register": "^0.0.3",
+    "param-injection": "^0.1.0"
   },
   "devDependencies": {
     "coveralls": "^2.11.0",
-    "istanbul": "^0.4.0",
-    "jscs": "^2.8.0",
+    "istanbul": "^0.4.2",
+    "jscs": "^2.9.0",
     "loopback-connector-couchbase3": "^0.2.0",
     "loopback-connector-redis": "^0.0.3",
     "loopback-datasource-juggler": "^2.44.0",
     "mocha": "^2.0.0",
     "rc": "^1.0.0",
-    "should": "^8.0.0",
+    "should": "^8.2.0",
     "sinon": "^1.0.0"
   },
   "scripts": {

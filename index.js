@@ -1,4 +1,3 @@
-var path = require('path');
 var Register = require('file-register');
 
 // The lib.
