@@ -28,7 +28,7 @@
   "homepage": "https://github.com/Wiredcraft/loopback-cache",
   "dependencies": {
     "debug": "^2.1.1",
-    "file-register": "^0.0.3",
+    "file-register": "^0.1.0",
     "param-injection": "^0.1.0"
   },
   "devDependencies": {
