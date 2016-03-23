@@ -40,7 +40,7 @@
     "loopback-datasource-juggler": "^2.44.0",
     "mocha": "^2.0.0",
     "rc": "^1.0.0",
-    "should": "^8.2.0",
+    "should": "^8.3.0",
     "sinon": "^1.0.0"
   },
   "scripts": {
