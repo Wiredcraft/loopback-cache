@@ -33,7 +33,7 @@
   },
   "devDependencies": {
     "coveralls": "^2.11.0",
-    "istanbul": "^0.4.2",
+    "istanbul": "^0.4.3",
     "jscs": "^2.9.0",
     "loopback-connector-couchbase3": "^0.2.0",
     "loopback-connector-redis": "^0.0.3",
