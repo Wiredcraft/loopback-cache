@@ -1,14 +1,19 @@
 sudo: required
 language: node_js
 node_js:
-  - "4.2"
+  - "5"
+  - "4"
   - "0.12"
 services:
   - redis-server
   - docker
 env:
-  - COUCHBASE="couchbase/server:community-4.0.0"
-  - COUCHBASE="couchbase/server:community-3.0.1"
+  global:
+    - COUCHBASE_USER="Administrator"
+    - COUCHBASE_PASS="password"
+  matrix:
+    - COUCHBASE="couchbase/server:community-4.0.0"
+    - COUCHBASE="couchbase/server:community-3.0.1"
 before_install:
   - ./test/docker-couchbase.sh
 install:
