@@ -9,6 +9,7 @@
  *
  * Built in backends:
  * - `redis`
+ * - `ioredis`
  * - `couchbase`
  */
 var debug = require('debug')('loopback:cache:CacheModel');

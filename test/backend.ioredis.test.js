@@ -48,9 +48,7 @@ describe('IORedis backend', function () {
 
   it('cannot load something not there', function (done) {
     Person.findById(999).then(function (person) {
-      person.should.be.Object();
-      should(person.id).be.undefined();
-      should(person.name).be.undefined();
+      should.not.exist(person);
       done();
     }).catch(done);
   });
@@ -58,9 +56,7 @@ describe('IORedis backend', function () {
   it('cannot load the item after 3 seconds', function (done) {
     setTimeout(function () {
       Person.findById('lorem').then(function (person) {
-        person.should.be.Object();
-        should(person.id).be.undefined();
-        should(person.name).be.undefined();
+        should.not.exist(person);
         done();
       }).catch(done);
     }, 3000);
