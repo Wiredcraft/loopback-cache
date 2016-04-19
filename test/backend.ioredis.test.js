@@ -2,27 +2,29 @@ var should = require('should');
 var mixin = require('../mixins/cacheModel');
 var DataSource = require('loopback-datasource-juggler').DataSource;
 
-describe('Redis backend', function () {
+describe('IORedis backend', function () {
   var db;
   var Person;
   var id;
   var connector;
 
   before(function () {
-    db = new DataSource(require('loopback-connector-redis'));
+    db = new DataSource(require('loopback-connector-ioredis'));
     connector = db.connector;
     Person = db.createModel('person', {
       id: String,
       name: String
     });
     mixin(Person, {
-      backend: 'redis',
+      backend: 'ioredis',
       ttl: 2 //s
     });
   });
 
   after(function (done) {
-    connector.client.flushall(done);
+    connector.connect().call('flushall').then(function () {
+      done();
+    }, done);
   });
 
   it('can create a new item', function (done) {
