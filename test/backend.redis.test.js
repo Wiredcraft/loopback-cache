@@ -21,11 +21,11 @@ describe('Redis backend', function() {
     });
   });
 
-  after(function (done) {
+  after(function(done) {
     connector.client.flushall(done);
   });
 
-  it('can create a new item', function (done) {
+  it('can create a new item', function(done) {
     return Person.create({
       name: 'Lorem'
     }).then(function(person) {
