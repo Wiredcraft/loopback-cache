@@ -2,27 +2,29 @@ var should = require('should');
 var mixin = require('../mixins/cacheModel');
 var DataSource = require('loopback-datasource-juggler').DataSource;
 
-describe('Redis backend', function() {
+describe('IORedis backend', function() {
   var db;
   var Person;
   var id;
   var connector;
 
   before(function() {
-    db = new DataSource(require('loopback-connector-redis'));
+    db = new DataSource(require('loopback-connector-ioredis'));
     connector = db.connector;
     Person = db.createModel('person', {
       id: String,
       name: String
     });
     mixin(Person, {
-      backend: 'redis',
+      backend: 'ioredis',
       ttl: 2 //s
     });
   });
 
   after(function(done) {
-    connector.client.flushall(done);
+    connector.connect().call('flushall').then(function() {
+      done();
+    }, done);
   });
 
   it('can create a new item', function(done) {
@@ -46,9 +48,7 @@ describe('Redis backend', function() {
 
   it('cannot load something not there', function(done) {
     Person.findById(999).then(function(person) {
-      person.should.be.Object();
-      should(person.id).be.undefined();
-      should(person.name).be.undefined();
+      should.not.exist(person);
       done();
     }).catch(done);
   });
@@ -56,9 +56,7 @@ describe('Redis backend', function() {
   it('cannot load the item after 3 seconds', function(done) {
     setTimeout(function() {
       Person.findById('lorem').then(function(person) {
-        person.should.be.Object();
-        should(person.id).be.undefined();
-        should(person.name).be.undefined();
+        should.not.exist(person);
         done();
       }).catch(done);
     }, 3000);
