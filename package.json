@@ -40,7 +40,7 @@
     "loopback-connector-redis": "^0.0.3",
     "loopback-datasource-juggler": "^2.46.0",
     "mocha": "^2.4.5",
-    "should": "^8.3.1"
+    "should": "^9.0.2"
   },
   "scripts": {
     "benchmarks": "make benchmarks",
