@@ -38,7 +38,7 @@
     "loopback-connector-couchbase3": "^0.2.2",
     "loopback-connector-ioredis": "^0.1.0",
     "loopback-connector-redis": "^0.0.3",
-    "loopback-datasource-juggler": "^2.46.0",
+    "loopback-datasource-juggler": "^2.48.0",
     "mocha": "^2.4.5",
     "should": "^8.3.1"
   },
