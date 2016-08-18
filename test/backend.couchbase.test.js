@@ -31,13 +31,11 @@ describe('Couchbase backend', function() {
     });
   });
 
-  after(function(done) {
-    db.connector.manager().call('flushAsync').then(function() {
-      done();
-    }, done);
+  after(function() {
+    return db.connector.manager().call('flushAsync');
   });
 
-  it('can create a new item', function(done) {
+  it('can create a new item', function() {
     return Person.create({
       name: 'Lorem'
     }).then(function(person) {
@@ -45,17 +43,15 @@ describe('Couchbase backend', function() {
       person.id.should.be.String();
       person.name.should.equal('Lorem');
       id = person.id;
-      done();
-    }).catch(done);
+    });
   });
 
-  it('can load the item', function(done) {
-    Person.findById(id).then(function(person) {
+  it('can load the item', function() {
+    return Person.findById(id).then(function(person) {
       person.should.be.Object();
       person.id.should.equal(id);
       person.name.should.equal('Lorem');
-      done();
-    }).catch(done);
+    });
   });
 
   it('cannot load something not there', function(done) {

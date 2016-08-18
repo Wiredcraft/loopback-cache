@@ -1,9 +1,14 @@
 sudo: required
 language: node_js
+cache:
+  directories:
+    - node_modules
+notifications:
+  email: false
 node_js:
+  - "6"
   - "5"
   - "4"
-  - "0.12"
 services:
   - redis-server
   - docker
@@ -13,10 +18,12 @@ env:
     - COUCHBASE_PASS="password"
   matrix:
     - COUCHBASE="couchbase/server:community-4.0.0"
-    - COUCHBASE="couchbase/server:community-3.0.1"
+    - COUCHBASE="couchbase/server:community-3.1.3"
 before_install:
   - ./test/docker-couchbase.sh
 install:
   - npm install
+before_script:
+  - npm prune
 script:
   - make test-coveralls
