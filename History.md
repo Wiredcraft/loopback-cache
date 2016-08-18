@@ -1,4 +1,10 @@
 
+0.2.0 / 2016-08-18
+==================
+
+  * Fixed tests.
+  * Update modules and cleanup code. Also merged ioredis backend to redis backend.
+
 0.1.0 / 2016-04-20
 ==================
 
