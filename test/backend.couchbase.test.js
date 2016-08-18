@@ -31,13 +31,11 @@ describe('Couchbase backend', function() {
     });
   });
 
-  after(function(done) {
-    db.connector.manager().call('flushAsync').then(function() {
-      done();
-    }, done);
+  after(function() {
+    return db.connector.manager().call('flushAsync');
   });
 
-  it('can create a new item', function(done) {
+  it('can create a new item', function() {
     return Person.create({
       name: 'Lorem'
     }).then(function(person) {
@@ -45,36 +43,29 @@ describe('Couchbase backend', function() {
       person.id.should.be.String();
       person.name.should.equal('Lorem');
       id = person.id;
-      done();
-    }).catch(done);
+    });
   });
 
-  it('can load the item', function(done) {
-    Person.findById(id).then(function(person) {
+  it('can load the item', function() {
+    return Person.findById(id).then(function(person) {
       person.should.be.Object();
       person.id.should.equal(id);
       person.name.should.equal('Lorem');
-      done();
-    }).catch(done);
+    });
   });
 
-  it('cannot load something not there', function(done) {
-    Person.findById('ipsum').then(function() {
-      done(new Error('expected an error'));
-    }, function(err) {
-      should.exist(err);
-      done();
+  it('cannot load something not there', function() {
+    return Person.findById('ipsum').then(function(person) {
+      should.not.exist(person);
     });
   });
 
   it('cannot load the item after 3 seconds', function(done) {
     setTimeout(function() {
-      Person.findById(id).then(function() {
-        done(new Error('expected an error'));
-      }, function(err) {
-        should.exist(err);
+      Person.findById(id).then(function(person) {
+        should.not.exist(person);
         done();
-      });
+      }).catch(done);
     }, 3000);
   });
 });

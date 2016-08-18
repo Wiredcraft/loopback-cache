@@ -1,4 +1,8 @@
-// Same syntax as a mixin.
+'use strict';
+
+/**
+ * Same syntax as a mixin.
+ */
 module.exports = function(Model, options) {
 
   if (options.ttl != null && options.ttl) {
