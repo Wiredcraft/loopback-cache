@@ -50,7 +50,7 @@ describe('IORedis backend', function() {
 
   it('cannot load the item after 3 seconds', function(done) {
     setTimeout(function() {
-      Person.findById('lorem').then(function(person) {
+      Person.findById(id).then(function(person) {
         should.not.exist(person);
         done();
       }).catch(done);

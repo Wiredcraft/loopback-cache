@@ -54,23 +54,18 @@ describe('Couchbase backend', function() {
     });
   });
 
-  it('cannot load something not there', function(done) {
-    Person.findById('ipsum').then(function() {
-      done(new Error('expected an error'));
-    }, function(err) {
-      should.exist(err);
-      done();
+  it('cannot load something not there', function() {
+    return Person.findById('ipsum').then(function(person) {
+      should.not.exist(person);
     });
   });
 
   it('cannot load the item after 3 seconds', function(done) {
     setTimeout(function() {
-      Person.findById(id).then(function() {
-        done(new Error('expected an error'));
-      }, function(err) {
-        should.exist(err);
+      Person.findById(id).then(function(person) {
+        should.not.exist(person);
         done();
-      });
+      }).catch(done);
     }, 3000);
   });
 });

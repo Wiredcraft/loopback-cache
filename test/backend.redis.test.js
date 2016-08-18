@@ -52,7 +52,7 @@ describe('Redis backend', function() {
 
   it('cannot load the item after 3 seconds', function(done) {
     setTimeout(function() {
-      Person.findById('lorem').then(function(person) {
+      Person.findById(id).then(function(person) {
         person.should.be.Object();
         should(person.id).be.undefined();
         should(person.name).be.undefined();
@@ -110,7 +110,7 @@ describe('Redis backend with IORedis connector', function() {
 
   it('cannot load the item after 3 seconds', function(done) {
     setTimeout(function() {
-      Person.findById('lorem').then(function(person) {
+      Person.findById(id).then(function(person) {
         should.not.exist(person);
         done();
       }).catch(done);
