@@ -31,7 +31,7 @@ To load the mixins.
 }
 ```
 
-To use the `redis` backend, setup a model using the [redis](https://github.com/strongloop/loopback-connector-redis) connector and use the mixin `CacheModel` with the model. The TTL is in seconds, see http://redis.io/commands/expire.
+To use the `redis` backend, setup a model using the [redis connector](https://github.com/strongloop/loopback-connector-redis) or the [ioredis connector](https://github.com/Wiredcraft/loopback-connector-ioredis) and use the mixin `CacheModel` with the model. The TTL is in seconds, see http://redis.io/commands/expire.
 
 ```
 # The model JSON
@@ -47,7 +47,7 @@ To use the `redis` backend, setup a model using the [redis](https://github.com/s
 }
 ```
 
-To use the `couchbase` backend, setup a model using the [couchbase3](https://github.com/Wiredcraft/loopback-connector-couchbase3) connector and use the mixin `CacheModel` with the model. The TTL is in seconds usually but also has a special case, see http://docs.couchbase.com/sdk-api/couchbase-node-client-2.1.2/Bucket.html#touch.
+To use the `couchbase` backend, setup a model using the [couchbase3 connector](https://github.com/Wiredcraft/loopback-connector-couchbase3) and use the mixin `CacheModel` with the model. The TTL is in seconds usually but also has a special case, see http://docs.couchbase.com/sdk-api/couchbase-node-client-2.1.2/Bucket.html#touch.
 
 ```
 # The model JSON
@@ -63,16 +63,49 @@ To use the `couchbase` backend, setup a model using the [couchbase3](https://git
 }
 ```
 
+## Extending
+
+__Note:__ This module doesn't do anything on the DB or table level. For example MongoDB would require a special index that matches the field, which should be prepared before you start the application.
+
+To add the support for a specific connector (it's a model mixin so we are talking connectors not DB directly), extend this module in a place that will be executed (for example `boot`).
+
+```
+var loopbackCache = require('loopback-cache');
+```
+
+And add a new backend (you can also override backends). See https://github.com/Wiredcraft/loopback-cache/tree/master/backends for examples.
+
+```
+loopbackCache.backends.something = function(Model, options) {};
+```
+
+Now you can use it in the model JSON, same as any other backend.
+
+```
+{
+  "mixins": {
+    "CacheModel": {
+      "backend": "something",
+      "ttl": 3600
+    }
+  }
+}
+```
+
+## Contributing
+
+If you want to add a new backend to the module, just drop the file in the `backends` directory, and send us a PR.
+
 ## Git Summary
 
 ```
  project  : loopback-cache
- repo age : 3 months
- active   : 12 days
- commits  : 33
- files    : 14
+ repo age : 11 months
+ active   : 16 days
+ commits  : 46
+ files    : 18
  authors  :
-    20  CCharlieLi   60.6%
-    11  Makara Wang  33.3%
-     2  fraserxu     6.1%
+    22  CCharlieLi   47.8%
+    22  Makara Wang  47.8%
+     2  fraserxu     4.3%
 ```
