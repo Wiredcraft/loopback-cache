@@ -47,7 +47,7 @@ To use the `redis` backend, setup a model using the [redis connector](https://gi
 }
 ```
 
-To use the `couchbase` backend, setup a model using the [couchbase3 connector](https://github.com/Wiredcraft/loopback-connector-couchbase3) and use the mixin `CacheModel` with the model. The TTL is in seconds usually but also has a special case, see http://docs.couchbase.com/sdk-api/couchbase-node-client-2.1.2/Bucket.html#touch.
+To use the `couchbase` backend, setup a model using the [couchbase3 connector](https://github.com/Wiredcraft/loopback-connector-couchbase3) and use the mixin `CacheModel` with the model. The TTL is in seconds, for value larger than 30 * 24 * 60 * 60 seconds (30 days), it would be converted to absolute times (from the epoch) in seconds, see http://docs.couchbase.com/sdk-api/couchbase-node-client-2.1.2/Bucket.html#touch.
 
 ```
 # The model JSON
