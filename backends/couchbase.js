@@ -1,5 +1,9 @@
 'use strict';
 
+var convertToAbsExpiry = function(ttl) {
+  return Math.floor(Date.now() / 1000) + ttl;
+};
+
 /**
  * Same syntax as a mixin.
  */
@@ -11,7 +15,11 @@ module.exports = function(Model, options) {
       // @see https://github.com/Wiredcraft/loopback-connector-couchbase3
       if (ctx.Model.getConnector().name === 'couchbase3') {
         // @see http://docs.couchbase.com/sdk-api/couchbase-node-client-2.1.2/Bucket.html#touch
-        ctx.options.expiry = options.ttl;
+        if (options.ttl > 30 * 24 * 60 * 60) {
+          ctx.options.expiry = convertToAbsExpiry(options.ttl);
+        } else {
+          ctx.options.expiry = options.ttl;
+        }
         return next();
       }
       // Nothing else supported for now.
