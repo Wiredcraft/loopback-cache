@@ -1,4 +1,9 @@
 
+v0.2.1 / 2019-03-04
+===================
+
+  * convert TTL > 30 days to unix epoch time for couchbase
+
 0.2.0 / 2016-08-18
 ==================
 
@@ -18,4 +23,4 @@
 0.0.1 / 2015-10-20
 ==================
 
-* First release.
+  * First release.
