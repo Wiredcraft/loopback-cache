@@ -36,6 +36,7 @@
     "istanbul": "^0.4.4",
     "jscs": "^3.0.7",
     "loopback-connector-couchbase3": "^0.3.0",
+    "loopback-connector-couchbase5": "^0.0.2",
     "loopback-connector-ioredis": "^0.2.0",
     "loopback-connector-redis": "^0.0.3",
     "loopback-datasource-juggler": "^2.49.0",

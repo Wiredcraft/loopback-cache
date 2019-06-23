@@ -2,7 +2,7 @@
 set -ev
 
 # Require some environment variables. Examples:
-# export COUCHBASE="couchbase/server:community-3.0.1"
+# export COUCHBASE="couchbase/server:community-5.1.1"
 # export COUCHBASE_USER="Administrator"
 # export COUCHBASE_PASS="password"
 
@@ -38,6 +38,14 @@ while true; do
   break
 done
 
+if [ $COUCHBASE == 'couchbase/server:community-5.1.1' ]; then
+  docker run --rm --entrypoint=/opt/couchbase/bin/couchbase-cli $COUCHBASE \
+    cluster-init -c "$CONTAINER_IP:8091" \
+    --cluster-username=$COUCHBASE_USER --cluster-password=$COUCHBASE_PASS --cluster-ramsize=256 \
+    --cluster-ramsize=512 --cluster-index-ramsize=256 --cluster-fts-ramsize=256 \
+    --services=data,index,query,fts
+fi
+
 if [ $COUCHBASE == 'couchbase/server:community-4.0.0' ]; then
   docker run --rm --entrypoint=/opt/couchbase/bin/couchbase-cli $COUCHBASE \
     cluster-init -c "$CONTAINER_IP:8091" -u $COUCHBASE_USER -p $COUCHBASE_PASS \
@@ -51,7 +59,14 @@ if [ $COUCHBASE == 'couchbase/server:community-3.0.1' ]; then
     --cluster-username=$COUCHBASE_USER --cluster-password=$COUCHBASE_PASS --cluster-ramsize=256
 fi
 
-docker run --rm --entrypoint=/opt/couchbase/bin/couchbase-cli $COUCHBASE \
-  bucket-create -c "$CONTAINER_IP:8091" -u $COUCHBASE_USER -p $COUCHBASE_PASS \
-  --bucket=test_bucket --bucket-type=couchbase --bucket-port=11211 \
-  --bucket-ramsize=100 --bucket-replica=1 --enable-flush=1 --wait
+if [ $COUCHBASE == 'couchbase/server:community-5.1.1' ]; then
+  docker run --rm --entrypoint=/opt/couchbase/bin/couchbase-cli $COUCHBASE \
+    bucket-create -c "$CONTAINER_IP:8091" -u $COUCHBASE_USER -p $COUCHBASE_PASS \
+    --bucket=test_bucket --bucket-type=couchbase --bucket-port=11222 \
+    --bucket-ramsize=100 --bucket-replica=1 --enable-flush=1 --wait
+else
+  docker run --rm --entrypoint=/opt/couchbase/bin/couchbase-cli $COUCHBASE \
+    bucket-create -c "$CONTAINER_IP:8091" -u $COUCHBASE_USER -p $COUCHBASE_PASS \
+    --bucket=test_bucket --bucket-type=couchbase --bucket-port=11211 \
+    --bucket-ramsize=100 --bucket-replica=1 --enable-flush=1 --wait
+fi
