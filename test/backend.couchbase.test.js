@@ -11,23 +11,46 @@ describe('Couchbase backend', function() {
   var id;
 
   before(function() {
-    db = new DataSource(require('loopback-connector-couchbase3'), {
-      cluster: {
-        url: 'couchbase://localhost',
-        options: {}
-      },
-      bucket: {
-        name: 'test_bucket',
-        password: ''
-      },
-      designDocs: {
-        find: {
-          views: {
-            getExpiry: { map: `function(e,m){e._type&&emit(m.expiration)}` }
+    if (/community-5/.test(process.env.COUCHBASE)) {
+      db = new DataSource(require('loopback-connector-couchbase5'), {
+        cluster: {
+          url: 'couchbase://localhost',
+          options: {},
+          username: process.env.COUCHBASE_USER,
+          password: process.env.COUCHBASE_PASS
+        },
+        bucket: {
+          name: 'test_bucket',
+          password: ''
+        },
+        designDocs: {
+          find: {
+            views: {
+              getExpiry: { map: `function(e,m){e._type&&emit(m.expiration)}` }
+            }
           }
         }
-      }
-    });
+      });
+    } else if (/community-[34]/.test(process.env.COUCHBASE)) {
+      db = new DataSource(require('loopback-connector-couchbase3'), {
+        cluster: {
+          url: 'couchbase://localhost',
+          options: {}
+        },
+        bucket: {
+          name: 'test_bucket',
+          password: ''
+        },
+        designDocs: {
+          find: {
+            views: {
+              getExpiry: { map: `function(e,m){e._type&&emit(m.expiration)}` }
+            }
+          }
+        }
+      });
+    }
+
     Person = db.createModel('person', {
       id: {
         type: String,

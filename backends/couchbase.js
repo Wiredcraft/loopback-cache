@@ -13,7 +13,7 @@ module.exports = function(Model, options) {
     // Set TTL before save.
     Model.observe('before save', function(ctx, next) {
       // @see https://github.com/Wiredcraft/loopback-connector-couchbase3
-      if (ctx.Model.getConnector().name === 'couchbase3') {
+      if (/^couchbase[35]$/.test(ctx.Model.getConnector().name)) {
         // @see http://docs.couchbase.com/sdk-api/couchbase-node-client-2.1.2/Bucket.html#touch
         if (options.ttl > 30 * 24 * 60 * 60) {
           ctx.options.expiry = convertToAbsExpiry(options.ttl);
