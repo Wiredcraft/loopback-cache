@@ -32,7 +32,7 @@
     "file-register": "^0.1.0"
   },
   "devDependencies": {
-    "coveralls": "^2.11.12",
+    "coveralls": "^3.1.1",
     "istanbul": "^0.4.4",
     "jscs": "^3.0.7",
     "loopback-connector-couchbase3": "^0.3.0",
@@ -40,7 +40,7 @@
     "loopback-connector-ioredis": "^0.2.0",
     "loopback-connector-redis": "^0.0.3",
     "loopback-datasource-juggler": "^2.49.0",
-    "mocha": "^3.0.2",
+    "mocha": "^10.1.0",
     "should": "^11.1.0"
   },
   "scripts": {
